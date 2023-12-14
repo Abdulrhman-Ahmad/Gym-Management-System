@@ -38,4 +38,4 @@ The Gym Management System is a desktop application built using Windows Forms. It
 
 1. Clone the repository.
    ```bash
-   git clone https://github.com/your-username/gym-management-system.git
+   git clone https://github.com/Abdulrhman-Ahmad/Gym-Management-System
