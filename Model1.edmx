@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GymSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Classes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fees" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClassTrainers">
+          <Key>
+            <PropertyRef Name="StaffID" />
+            <PropertyRef Name="ClassesID" />
+          </Key>
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="ClassesID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="SerielNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeliveryDate" Type="date" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="JobTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salary" Type="int" Nullable="false" />
+          <Property Name="HireDate" Type="date" Nullable="false" />
+          <Property Name="Image" Type="binary" MaxLength="1000" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="Trainees">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="Image" Type="binary" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="TraineesClassesEnrollment">
+          <Key>
+            <PropertyRef Name="TraineesID" />
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="TraineesID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="SubFee" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="ClassTrainersClassesFK">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="1" />
+          <End Role="ClassTrainers" Type="Self.ClassTrainers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ClassTrainers">
+              <PropertyRef Name="ClassesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EquipmentsFK">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="1" />
+          <End Role="Equipments" Type="Self.Equipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Equipments">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StaffClassesTraineesStaffFK">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="ClassTrainers" Type="Self.ClassTrainers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ClassTrainers">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TraineesClassesEnrollmentClassIDFK">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="1" />
+          <End Role="TraineesClassesEnrollment" Type="Self.TraineesClassesEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineesClassesEnrollment">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TraineesClassesEnrollmentTraineesFK">
+          <End Role="Trainees" Type="Self.Trainees" Multiplicity="1" />
+          <End Role="TraineesClassesEnrollment" Type="Self.TraineesClassesEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineesClassesEnrollment">
+              <PropertyRef Name="TraineesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="gender" Type="nvarchar" Mode="In" />
+          <Parameter Name="age" Type="int" Mode="In" />
+          <Parameter Name="phone" Type="nvarchar" Mode="In" />
+          <Parameter Name="jobTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="salary" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddTrainee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="gender" Type="nvarchar" Mode="In" />
+          <Parameter Name="age" Type="int" Mode="In" />
+          <Parameter Name="phone" Type="nvarchar" Mode="In" />
+          <Parameter Name="class" Type="nvarchar" Mode="In" />
+          <Parameter Name="duration" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddTrainer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="gender" Type="nvarchar" Mode="In" />
+          <Parameter Name="age" Type="int" Mode="In" />
+          <Parameter Name="phone" Type="nvarchar" Mode="In" />
+          <Parameter Name="class" Type="nvarchar" Mode="In" />
+          <Parameter Name="salary" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ClassId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteTrainee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TraineeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteTrainer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MoneyGraphList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="TraineePerEachClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="TraineesPerClassMonths" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="GymSystemModelStoreContainer">
+          <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassTrainers" EntityType="Self.ClassTrainers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipments" EntityType="Self.Equipments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trainees" EntityType="Self.Trainees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TraineesClassesEnrollment" EntityType="Self.TraineesClassesEnrollment" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="ClassTrainersClassesFK" Association="Self.ClassTrainersClassesFK">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="ClassTrainers" EntitySet="ClassTrainers" />
+          </AssociationSet>
+          <AssociationSet Name="EquipmentsFK" Association="Self.EquipmentsFK">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Equipments" EntitySet="Equipments" />
+          </AssociationSet>
+          <AssociationSet Name="StaffClassesTraineesStaffFK" Association="Self.StaffClassesTraineesStaffFK">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="ClassTrainers" EntitySet="ClassTrainers" />
+          </AssociationSet>
+          <AssociationSet Name="TraineesClassesEnrollmentClassIDFK" Association="Self.TraineesClassesEnrollmentClassIDFK">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="TraineesClassesEnrollment" EntitySet="TraineesClassesEnrollment" />
+          </AssociationSet>
+          <AssociationSet Name="TraineesClassesEnrollmentTraineesFK" Association="Self.TraineesClassesEnrollmentTraineesFK">
+            <End Role="Trainees" EntitySet="Trainees" />
+            <End Role="TraineesClassesEnrollment" EntitySet="TraineesClassesEnrollment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GymSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fees" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Equipments" Relationship="Self.EquipmentsFK" FromRole="Classes" ToRole="Equipments" />
+          <NavigationProperty Name="TraineesClassesEnrollments" Relationship="Self.TraineesClassesEnrollmentClassIDFK" FromRole="Classes" ToRole="TraineesClassesEnrollment" />
+          <NavigationProperty Name="Staffs" Relationship="Self.ClassTrainers" FromRole="Classes" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="SerielNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.EquipmentsFK" FromRole="Equipments" ToRole="Classes" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salary" Type="Int32" Nullable="false" />
+          <Property Name="HireDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Image" Type="Binary" MaxLength="1000" FixedLength="true" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Classes" Relationship="Self.ClassTrainers" FromRole="Staff" ToRole="Classes" />
+        </EntityType>
+        <EntityType Name="Trainee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="1000" FixedLength="true" />
+          <NavigationProperty Name="TraineesClassesEnrollments" Relationship="Self.TraineesClassesEnrollmentTraineesFK" FromRole="Trainees" ToRole="TraineesClassesEnrollment" />
+        </EntityType>
+        <EntityType Name="TraineesClassesEnrollment">
+          <Key>
+            <PropertyRef Name="TraineesID" />
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="TraineesID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubFee" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.TraineesClassesEnrollmentClassIDFK" FromRole="TraineesClassesEnrollment" ToRole="Classes" />
+          <NavigationProperty Name="Trainee" Relationship="Self.TraineesClassesEnrollmentTraineesFK" FromRole="TraineesClassesEnrollment" ToRole="Trainees" />
+        </EntityType>
+        <Association Name="EquipmentsFK">
+          <End Role="Classes" Type="Self.Class" Multiplicity="1" />
+          <End Role="Equipments" Type="Self.Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Equipments">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TraineesClassesEnrollmentClassIDFK">
+          <End Role="Classes" Type="Self.Class" Multiplicity="1" />
+          <End Role="TraineesClassesEnrollment" Type="Self.TraineesClassesEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineesClassesEnrollment">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TraineesClassesEnrollmentTraineesFK">
+          <End Role="Trainees" Type="Self.Trainee" Multiplicity="1" />
+          <End Role="TraineesClassesEnrollment" Type="Self.TraineesClassesEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineesClassesEnrollment">
+              <PropertyRef Name="TraineesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ClassTrainers">
+          <End Role="Classes" Type="Self.Class" Multiplicity="*" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="GymSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classes" EntityType="Self.Class" />
+          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="Trainees" EntityType="Self.Trainee" />
+          <EntitySet Name="TraineesClassesEnrollments" EntityType="Self.TraineesClassesEnrollment" />
+          <AssociationSet Name="EquipmentsFK" Association="Self.EquipmentsFK">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Equipments" EntitySet="Equipments" />
+          </AssociationSet>
+          <AssociationSet Name="TraineesClassesEnrollmentClassIDFK" Association="Self.TraineesClassesEnrollmentClassIDFK">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="TraineesClassesEnrollment" EntitySet="TraineesClassesEnrollments" />
+          </AssociationSet>
+          <AssociationSet Name="TraineesClassesEnrollmentTraineesFK" Association="Self.TraineesClassesEnrollmentTraineesFK">
+            <End Role="Trainees" EntitySet="Trainees" />
+            <End Role="TraineesClassesEnrollment" EntitySet="TraineesClassesEnrollments" />
+          </AssociationSet>
+          <AssociationSet Name="ClassTrainers" Association="Self.ClassTrainers">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <FunctionImport Name="AddStaff">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="gender" Mode="In" Type="String" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+            <Parameter Name="jobTitle" Mode="In" Type="String" />
+            <Parameter Name="salary" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddTrainee">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="gender" Mode="In" Type="String" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+            <Parameter Name="class" Mode="In" Type="String" />
+            <Parameter Name="duration" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddTrainer">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="gender" Mode="In" Type="String" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+            <Parameter Name="class" Mode="In" Type="String" />
+            <Parameter Name="salary" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteClass">
+            <Parameter Name="ClassId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteStaff">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteTrainee">
+            <Parameter Name="TraineeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteTrainer">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MoneyGraphList" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="TraineePerEachClass" ReturnType="Collection(GymSystemModel.TraineePerEachClass_Result)" />
+          <FunctionImport Name="TraineesPerClassMonths" ReturnType="Collection(GymSystemModel.TraineesPerClassMonths_Result)" />
+        </EntityContainer>
+        <ComplexType Name="TraineePerEachClass_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="trainees" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="TraineesPerClassMonths_Result">
+          <Property Type="Int32" Name="last" Nullable="true" />
+          <Property Type="String" Name="className" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Traffic" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GymSystemModelStoreContainer" CdmEntityContainer="GymSystemEntities">
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="GymSystemModel.Class">
+              <MappingFragment StoreEntitySet="Classes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Fees" ColumnName="Fees" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipments">
+            <EntityTypeMapping TypeName="GymSystemModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipments">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="SerielNum" ColumnName="SerielNum" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="GymSystemModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trainees">
+            <EntityTypeMapping TypeName="GymSystemModel.Trainee">
+              <MappingFragment StoreEntitySet="Trainees">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TraineesClassesEnrollments">
+            <EntityTypeMapping TypeName="GymSystemModel.TraineesClassesEnrollment">
+              <MappingFragment StoreEntitySet="TraineesClassesEnrollment">
+                <ScalarProperty Name="TraineesID" ColumnName="TraineesID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="SubFee" ColumnName="SubFee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ClassTrainers" TypeName="GymSystemModel.ClassTrainers" StoreEntitySet="ClassTrainers">
+            <EndProperty Name="Classes">
+              <ScalarProperty Name="ID" ColumnName="ClassesID" />
+            </EndProperty>
+            <EndProperty Name="Staff">
+              <ScalarProperty Name="ID" ColumnName="StaffID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="AddStaff" FunctionName="GymSystemModel.Store.AddStaff" />
+          <FunctionImportMapping FunctionImportName="AddTrainee" FunctionName="GymSystemModel.Store.AddTrainee" />
+          <FunctionImportMapping FunctionImportName="AddTrainer" FunctionName="GymSystemModel.Store.AddTrainer" />
+          <FunctionImportMapping FunctionImportName="DeleteClass" FunctionName="GymSystemModel.Store.DeleteClass" />
+          <FunctionImportMapping FunctionImportName="DeleteStaff" FunctionName="GymSystemModel.Store.DeleteStaff" />
+          <FunctionImportMapping FunctionImportName="DeleteTrainee" FunctionName="GymSystemModel.Store.DeleteTrainee" />
+          <FunctionImportMapping FunctionImportName="DeleteTrainer" FunctionName="GymSystemModel.Store.DeleteTrainer" />
+          <FunctionImportMapping FunctionImportName="MoneyGraphList" FunctionName="GymSystemModel.Store.MoneyGraphList" />
+          <FunctionImportMapping FunctionImportName="TraineePerEachClass" FunctionName="GymSystemModel.Store.TraineePerEachClass">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.TraineePerEachClass_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="trainees" ColumnName="trainees" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="TraineesPerClassMonths" FunctionName="GymSystemModel.Store.TraineesPerClassMonths">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.TraineesPerClassMonths_Result">
+                <ScalarProperty Name="last" ColumnName="last" />
+                <ScalarProperty Name="className" ColumnName="className" />
+                <ScalarProperty Name="Traffic" ColumnName="Traffic" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
